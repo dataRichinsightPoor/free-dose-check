@@ -218,7 +218,7 @@ $("exportCsv").addEventListener("click",async()=>{
   catch(e){$("formError").textContent=e.message;$("formError").hidden=false;}
 });
 function setTheme(dark){document.documentElement.dataset.theme=dark?"dark":"light";$("theme").textContent=dark?"Light":"Dark";drawCharts();}
-setTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+setTheme(true);
 $("theme").addEventListener("click",()=>setTheme(document.documentElement.dataset.theme!=="dark"));
 new ResizeObserver(()=>drawCharts()).observe($("output-panel")||document.querySelector(".output-panel"));
 fetch("examples.json").then(r=>{if(!r.ok)throw new Error("Examples unavailable");return r.json();}).then(data=>{exampleData=data;updateButtons();}).catch(()=>{$("loadExample").textContent="Examples unavailable";});

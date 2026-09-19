@@ -11,7 +11,7 @@ const target=process.argv[2]||"http://localhost:3000";
 const output=process.argv[3]||"/tmp/free-dose-qa";
 await fs.mkdir(output,{recursive:true});
 const browser=await chromium.launch({headless:true});
-const context=await browser.newContext({viewport:{width:1440,height:1050},acceptDownloads:true});
+const context=await browser.newContext({viewport:{width:1440,height:1050},acceptDownloads:true,colorScheme:"light"});
 const page=await context.newPage(),errors=[];
 page.on("pageerror",e=>errors.push(e.message));
 const ready=p=>p.waitForFunction(()=>document.querySelector("#runtime").textContent.includes("Python ready"),null,{timeout:60000});
@@ -22,6 +22,8 @@ async function saveDownload(button,filename){
 }
 try {
   await page.goto(target,{waitUntil:"domcontentloaded"});await ready(page);
+  assert.equal(await page.evaluate(()=>document.documentElement.dataset.theme),"dark");
+  assert.equal(await page.locator("#theme").innerText(),"Light");
   assert.equal(await page.locator("#cells").inputValue(),"");
   await page.screenshot({path:path.join(output,"desktop-initial.png")});
   for(const [key,status,label] of [
@@ -63,12 +65,18 @@ try {
   await page.locator("#altCells").fill("100000");await page.locator("#altVolume").fill("100");
   await page.locator("#run").click();await page.locator("#comparisonCard").waitFor({state:"visible"});
   await saveDownload("#exportAlternative","alternative-export.json");
-  await page.locator("#theme").click();await page.evaluate(()=>scrollTo(0,0));
+  await page.locator("#theme").click();
+  assert.equal(await page.evaluate(()=>document.documentElement.dataset.theme),"light");
+  assert.equal(await page.locator("#theme").innerText(),"Dark");
+  await page.evaluate(()=>scrollTo(0,0));
+  await page.screenshot({path:path.join(output,"desktop-light.png")});
+  await page.locator("#theme").click();
   await page.screenshot({path:path.join(output,"desktop-dark.png")});
   assert.equal(await page.evaluate(()=>document.documentElement.dataset.theme),"dark");
   for(const width of [375,390]){
     const mobile=await browser.newContext({viewport:{width,height:844},isMobile:true,hasTouch:true});
     const p=await mobile.newPage();await p.goto(target,{waitUntil:"domcontentloaded"});await ready(p);
+    assert.equal(await p.evaluate(()=>document.documentElement.dataset.theme),"dark");
     assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
     await p.locator("#loadExample").click();await p.waitForFunction(()=>window.lastReport!==null);
     await p.locator("#results").scrollIntoViewIfNeeded();
