@@ -1,6 +1,6 @@
 """Exact one-variable design limits, rounded and forward checked."""
 import math
-from .model import AVOGADRO, NumericalError, site_concentration, equilibrium, within
+from .model import AVOGADRO, DOMAIN, NumericalError, site_concentration, equilibrium, within
 
 
 def recommendations(c, applicability_status):
@@ -12,13 +12,22 @@ def recommendations(c, applicability_status):
     kd = c["kd_nM"]["low"]
     sites = c["sites_per_cell"]["high"]
     cap = eps*dose + eps*kd/(1-eps)
+    if cap < DOMAIN[0]:
+        return {"status": "numerical_domain_limit",
+                "message": "The required site capacity is below the verified numerical domain; no actionable option is returned.",
+                "volume_option": None, "cell_option": None}
     volume_min = c["cell_count"] * (sites / AVOGADRO) * 1e15 / cap
     cells_max = (AVOGADRO / 1e15) * (c["volume_uL"] / sites) * cap
     if not all(math.isfinite(x) for x in (cap, volume_min, cells_max)):
         return {"status": "numerical_domain_limit", "message": "Design limits cannot be represented.",
                 "volume_option": None, "cell_option": None}
     # Display resolution is 0.001 uL; ceil never recommends a too-small volume.
-    volume = max(c["volume_uL"], math.ceil(volume_min * 1000) / 1000)
+    volume_rounded = (math.ceil(volume_min * 1000) / 1000 if volume_min < 1e12
+                      else math.nextafter(volume_min, math.inf))
+    if not math.isfinite(volume_rounded):
+        return {"status": "numerical_domain_limit", "message": "A sufficient rounded volume cannot be represented.",
+                "volume_option": None, "cell_option": None}
+    volume = max(c["volume_uL"], volume_rounded)
     cells = min(c["cell_count"], math.floor(cells_max))
 
     def check(n, v):

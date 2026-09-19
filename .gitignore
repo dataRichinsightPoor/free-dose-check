@@ -7,3 +7,4 @@ dist/
 .venv/
 web/free_dose_check.zip
 web/downloads/
+node_modules/

@@ -89,7 +89,8 @@ def validate(config):
     assumptions = config["assumptions"]
     if not isinstance(assumptions, dict) or set(assumptions) != set(ASSUMPTIONS):
         raise ValidationError("assumptions must contain: " + ", ".join(ASSUMPTIONS))
-    for key, value in assumptions.items():
+    for key in ASSUMPTIONS:
+        value = assumptions[key]
         if not isinstance(value, dict) or set(value) - {"status", "note"}:
             raise ValidationError(f"{key}: provide status and optional note.")
         if value.get("status") not in {"supported", "uncertain", "unsupported"}:

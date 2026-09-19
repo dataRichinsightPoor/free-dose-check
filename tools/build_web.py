@@ -38,7 +38,7 @@ with ZipFile(downloads / "free-dose-check-v0.1.0.zip", "w", ZIP_DEFLATED) as arc
     for path in sorted(ROOT.rglob("*")):
         relative = path.relative_to(ROOT)
         if not path.is_file() or any(
-            part in {".git", ".pytest_cache", "__pycache__", "downloads", "build", "dist"}
+            part in {".git", ".pytest_cache", "__pycache__", "downloads", "build", "dist", "node_modules"}
             or part.endswith(".egg-info") for part in relative.parts
         ) or path.suffix == ".pyc" or path.name == "free_dose_check.zip":
             continue

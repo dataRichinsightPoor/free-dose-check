@@ -73,6 +73,8 @@ R_{\mathrm{cap}}=\epsilon L_T+\frac{\epsilon K_d}{1-\epsilon}.
 
 The lowest positive input dose imposes the tightest site-capacity limit. The resulting volume and cell limits are algebraic, not rule-of-thumb tenfold ratios. Recommended volume is rounded upward to 0.001 µL and cell count downward to an integer, then each is evaluated through the forward model.
 
+At extremely large volumes (at least \(10^{12}\) µL), the next representable larger float is used rather than unsafe decimal scaling. If the required site capacity falls below the verified domain, no actionable design is returned; an explicit numerical-domain message replaces the alternatives.
+
 The implementation never recommends decreasing volume or increasing cells merely to use the limit. If the current condition is already within tolerance, it retains the current count and volume. Both supplied constraints apply to each option, including the variable held fixed.
 
 Maintaining concentration while increasing volume requires proportionally more ligand molecules. Reducing cells can reduce experimental signal, which this model does not predict. Combined count-and-volume changes are not optimized in v0.1.0.

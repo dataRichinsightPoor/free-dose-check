@@ -49,6 +49,8 @@ python -m build
 
 Serve `web/` with any static HTTP server. The browser downloads a Python package ZIP assembled from `src/`; run the build script after any core change. No application backend is required. A pinned runtime CDN is needed for the browser; the Python CLI works offline.
 
+The included static server is `python tools/serve.py --port 3000`. In a separate terminal, optional browser verification uses `npm ci`, `npx playwright install chromium`, then `npm run test:browser`. Afterward, run `python tools/check_browser_parity.py /tmp/free-dose-qa` to compare exported reports with native Python. The Node dependency is test-only, not part of the application runtime.
+
 See `docs/model.md`, `docs/assumptions.md`, `docs/validation.md`, and `docs/quickstart.md`. The release specification is in `docs/specification.md`. Synthetic examples are not experimental validation.
 
 ## License

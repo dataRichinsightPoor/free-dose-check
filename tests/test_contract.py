@@ -145,3 +145,18 @@ def test_deterministic_roundtrip_and_cli(config, tmp_path):
     proc = subprocess.run([sys.executable, "-m", "free_dose_check", "analyze", str(path)], capture_output=True, text=True)
     assert proc.returncode == 2
     assert json.loads(proc.stderr)["error"] == "ValidationError"
+
+
+def test_unsupported_roundtrip_independent_of_input_key_order(config):
+    config["assumptions"]["closed_system"]["status"] = "unsupported"
+    config["assumptions"]["independent_sites"]["status"] = "unsupported"
+    expected = analyze(config)
+    reparsed = json.loads(dumps(expected))
+    assert dumps(expected) == dumps(analyze(reparsed["inputs"]))
+
+
+def test_unrepresentably_small_design_capacity(config):
+    config["depletion_tolerance"] = 1e-320
+    report = analyze(config)
+    assert report["recommendations"]["status"] == "numerical_domain_limit"
+    assert report["recommendations"]["volume_option"] is None

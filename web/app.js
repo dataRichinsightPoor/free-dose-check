@@ -103,6 +103,7 @@ function markStale(){
   if(report){stale=true;$("staleBadge").hidden=false;updateButtons();}
 }
 async function runAnalysis(scroll=false){
+  if(!ready||working)return;
   $("formError").hidden=true;
   try{
     const config=getConfig();
@@ -162,7 +163,7 @@ function renderRecommendations(){
     return `<div class="rec-option"><h4>${type==="volume"?"Volume at fixed cell count":"Cell count at fixed volume"}</h4><strong>${amount}</strong><p>${note}</p><p class="status ${!verified||feasible===false?"bad":feasible===true?"ok":""}">${status}</p><p>${escapeHtml(v.error||v.constraint_failures.join("; ")||"Rounded option checked through the equilibrium model.")}</p></div>`;
   }
   const noChange=report.depletion_assessment==="within_tolerance"?"No depletion-driven change is required under the declared model. ":"";
-  $("recommendations").innerHTML=`<p class="rec-note">${rec.conditional?"Conditional options only: assumptions need review. ":""}${noChange}${escapeHtml(rec.message)}</p><div class="rec-options">${option(rec.volume_option,"volume")}${option(rec.cell_option,"cells")}</div><p class="rec-footer">Mathematical limits: volume ≥ ${fmt(rec.minimum_volume_uL)} µL or cells ≤ ${fmt(rec.maximum_cells)}. Limiting dose: ${fmt(rec.limiting_dose_nM)} nM. Display recommendation rounds volume up to 0.001 µL and cells down; each option changes only one variable.</p>`;
+  $("recommendations").innerHTML=`<p class="rec-note">${rec.conditional?"Conditional options only: assumptions need review. ":""}${noChange}${escapeHtml(rec.message)}</p><div class="rec-options">${option(rec.volume_option,"volume")}${option(rec.cell_option,"cells")}</div><p class="rec-footer">Approximate mathematical limits: minimum volume ${fmt(rec.minimum_volume_uL)} µL; maximum cells ${fmt(rec.maximum_cells)}. Full precision is retained in JSON. Limiting dose: ${fmt(rec.limiting_dose_nM)} nM. Actionable options above round volume up to 0.001 µL and cells down; each changes only one variable.</p>`;
 }
 function drawCharts(){
   if(!report)return;

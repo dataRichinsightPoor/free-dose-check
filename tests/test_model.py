@@ -37,6 +37,9 @@ def test_independent_high_precision_oracle():
             relative_error = abs(mp.mpf(actual)-expected)/expected
             assert relative_error <= mp.mpf("1e-9"), (r, l, k, actual, str(expected), str(relative_error))
         assert math.isclose(s["bound_nM"] + s["free_nM"], l, rel_tol=1e-12)
+        actual_b, actual_f = mp.mpf(s["bound_nM"]), mp.mpf(s["free_nM"])
+        scaled_residual = abs((R-actual_b)*actual_f-K*actual_b)/(R*actual_f+K*actual_b)
+        assert scaled_residual <= mp.mpf("1e-12"), (r,l,k,str(scaled_residual))
         # Residual evaluated at high precision avoids subtractive roundoff in nearly full occupancy.
         assert abs((R-B)*F-K*B) / max(K*B, mp.mpf("1e-100")) < mp.mpf("1e-50")
 

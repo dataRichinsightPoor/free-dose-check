@@ -1,0 +1,8 @@
+{
+  "name": "free-dose-check-browser-tests",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {"test:browser": "node tools/browser_qa.mjs"},
+  "devDependencies": {"playwright": "1.59.0"}
+}
