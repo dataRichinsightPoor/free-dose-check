@@ -4,6 +4,12 @@ A small, inspectable design aid for a specific question: under a finite-bath, si
 
 Version 0.1.0. Research use only. Biological validation is not yet established.
 
+## Public demo
+
+Open [Free-Dose Check on GitHub Pages](https://datarichinsightpoor.github.io/free-dose-check/). No installation or sign-in is required. Select “Load & run” to explore an explicitly synthetic example, or supply your own conditions and evidence notes.
+
+The public demo is built from `main` by the `public-demo` GitHub Actions workflow. Tests must pass before the static site is uploaded and deployed. The Python runtime bundle and downloadable source snapshot are generated in that build, so the demo uses the same calculation source as the CLI. See `docs/deployment.md` for maintenance and verification.
+
 ## Run
 
 Requires Python 3.10 or later. The installed package has no third-party runtime dependencies.
