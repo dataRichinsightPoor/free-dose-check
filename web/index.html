@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A transparent, local-first equilibrium binding design check.">
+  <title>Free-Dose Check | Data-Rich, Insight-Poor</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="./" aria-label="Free-Dose Check home">
+      <svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><path d="M5 5h22v22H5z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 23V10h12M11 16h8" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="23" cy="22" r="3" fill="currentColor"/></svg>
+      <span>DATA-RICH, INSIGHT-POOR<span class="brand-sub">EXECUTABLE BIOLOGY</span></span>
+    </a>
+    <div class="header-right"><span class="version">RESEARCH TOOL / 0.1.0</span><button id="theme" class="icon-button" aria-label="Switch color theme">Dark</button></div>
+  </header>
+  <main>
+    <section class="intro">
+      <div><p class="eyebrow">ASSAY DESIGN / FINITE-BATH BINDING</p><h1>Free-Dose Check<span class="title-dot">.</span></h1><p class="lede">You know the dose you added.<br class="mobile-break"> Check the dose left free.</p></div>
+      <div class="scope-note"><span class="small-label">ONE QUESTION. EXPLICIT ASSUMPTIONS.</span><p>Does ligand depletion matter across your titration? Explore a conserved, equilibrium 1:1 model before changing cells or volume.</p><a href="#method">Read the model <span aria-hidden="true">↗</span></a></div>
+    </section>
+    <div class="toolbar">
+      <div class="examples"><label for="example">Try a synthetic case</label><select id="example"><option value="constrained">High depletion, constrained</option><option value="low">Low depletion</option><option value="bounded">Bounds cross tolerance</option><option value="unsupported">Outside model scope</option></select><button id="loadExample" class="secondary" disabled>Load &amp; run</button></div>
+      <div id="runtime" class="runtime" role="status"><span class="pulse"></span>Loading local Python…</div>
+    </div>
+    <div id="runtimeError" class="error-box" hidden><p>The browser runtime could not load. Your inputs have not been sent anywhere. Check your connection and retry, or use the offline Python CLI.</p><button id="retry" class="secondary">Retry runtime</button></div>
+    <div class="workspace">
+      <aside class="input-panel">
+        <form id="analysisForm" novalidate>
+          <div class="panel-heading"><h2>Binding design</h2><span class="small-label">INPUTS</span></div>
+          <label for="label">Condition label <span class="optional">optional</span></label><input id="label" placeholder="e.g. Fab binding, condition A" maxlength="4000">
+          <div class="field-grid">
+            <div><label for="cells">Cells in incubation</label><input id="cells" type="number" min="1" step="1" placeholder="100000" required></div>
+            <div><label for="volume">Final volume <span>µL</span></label><input id="volume" type="number" min="0" step="any" placeholder="100" required></div>
+          </div>
+          <div class="field-top"><label for="sites">Accessible sites / cell</label><label class="checkbox"><input id="sitesBound" type="checkbox">Use bounds</label></div>
+          <div class="field-grid range-input"><input id="sites" type="number" min="0" step="any" placeholder="Count or lower bound" aria-label="Accessible sites per cell or lower bound" required><input id="sitesHigh" type="number" min="0" step="any" placeholder="Upper bound" aria-label="Accessible sites per cell upper bound" hidden></div>
+          <p class="hint">Accessible binding sites, not MFI or transcript abundance.</p>
+          <div class="field-top"><label for="kd">Affinity K<sub>d</sub> <span>nM</span></label><label class="checkbox"><input id="kdBound" type="checkbox">Use bounds</label></div>
+          <div class="field-grid range-input"><input id="kd" type="number" min="0" step="any" placeholder="Value or lower bound" aria-label="Kd in nM or lower bound" required><input id="kdHigh" type="number" min="0" step="any" placeholder="Upper bound" aria-label="Kd upper bound in nM" hidden></div>
+          <p class="hint">Not a functional EC50 or IC50. Bounds are not confidence intervals.</p>
+          <label for="doses">Added ligand concentrations <span>nM</span></label><textarea id="doses" rows="2" placeholder="0, 0.01, 0.1, 1, 10" required></textarea>
+          <p class="hint">Separate values with commas, spaces, or new lines. Include at least one positive dose.</p>
+          <div class="tolerance-row"><label for="tolerance">Depletion tolerance</label><div class="suffix-field"><input id="tolerance" type="number" min="0" max="100" step="any" value="10" required><span>%</span></div></div>
+          <p class="hint">10% is an editable planning convention, not a universal acceptance criterion.</p>
+          <details class="form-section"><summary>Operating constraints <span>optional</span></summary><div class="field-grid"><div><label for="maxVolume">Maximum volume <span>µL</span></label><input id="maxVolume" type="number" step="any" min="0" placeholder="Not specified"></div><div><label for="minCells">Minimum cells</label><input id="minCells" type="number" step="1" min="1" placeholder="Not specified"></div></div></details>
+          <details class="form-section" open><summary>Evidence &amp; model scope <span>required</span></summary>
+            <label for="ligandFormat">Ligand binding format</label><select id="ligandFormat"><option value="unspecified">Not established</option><option value="monovalent">Monovalent 1:1</option><option value="effective_1to1">Effective 1:1, justified</option><option value="bivalent">Bivalent / avidity relevant</option></select>
+            <div id="justificationWrap" hidden><label for="justification">Assay-specific 1:1 justification</label><textarea id="justification" rows="2"></textarea></div>
+            <label for="sitesKind">Site-count provenance</label><select id="sitesKind"><option value="assumed">Assumed</option><option value="measured">Measured</option><option value="literature">Literature</option></select>
+            <label class="sr-only" for="sitesNote">Site-count evidence and conditions</label><textarea id="sitesNote" rows="2" placeholder="Source, measurement conditions, or explicit assumption" required></textarea>
+            <label for="kdKind">Affinity provenance</label><select id="kdKind"><option value="assumed">Assumed</option><option value="measured">Measured</option><option value="literature">Literature</option></select>
+            <label class="sr-only" for="kdNote">Affinity evidence and conditions</label><textarea id="kdNote" rows="2" placeholder="Source, measurement conditions, or explicit assumption" required></textarea>
+            <label for="kdBasis">Basis of affinity input</label><select id="kdBasis"><option value="not_established">Independence not established</option><option value="independent">Independently supported / specified</option><option value="possibly_depleted">Potentially depleted binding assay</option><option value="functional">Functional EC50 / IC50 (not accepted)</option></select>
+            <div id="assumptionInputs"></div>
+            <p class="hint">“Supported” is your declaration, not verification by this tool. Incubation time alone does not establish equilibrium.</p>
+          </details>
+          <details class="form-section"><summary>Compare one alternative <span>optional</span></summary><label class="checkbox compare-enable"><input id="compareEnabled" type="checkbox">Compare another count or volume</label><div class="field-grid"><div><label for="altCells">Alternative cells</label><input id="altCells" type="number" step="1" min="1" placeholder="Required if enabled"></div><div><label for="altVolume">Alternative volume <span>µL</span></label><input id="altVolume" type="number" step="any" min="0" placeholder="Required if enabled"></div></div><p class="hint">All other inputs, concentrations, assumptions, and constraints remain unchanged.</p></details>
+          <div id="formError" class="error-box" role="alert" hidden></div>
+          <button id="run" type="submit" class="primary" disabled>Run depletion check <span aria-hidden="true">↗</span></button>
+          <p class="privacy-note">Calculated on your device. No input storage, analytics, or server-side analysis.</p>
+        </form>
+      </aside>
+      <section class="output-panel" aria-label="Analysis results">
+        <div id="empty" class="empty-state">
+          <span class="empty-symbol" aria-hidden="true">L<sub>free</sub> ≠ L<sub>added</sub></span>
+          <p class="eyebrow">THE APPROXIMATION IS THE QUESTION</p><h2>Start with a binding design.</h2><p>Enter your incubation conditions, declare what the model can assume, and check every concentration. Or load an explicitly synthetic case to explore.</p>
+          <div class="empty-steps"><div><span>01</span><strong>Quantify depletion</strong><p>Free ligand, occupancy, and approximation error.</p></div><div><span>02</span><strong>Preserve uncertainty</strong><p>Ranges in, ranges out. No invented midpoint.</p></div><div><span>03</span><strong>Test a change</strong><p>Cell and volume limits, with practical constraints.</p></div></div>
+          <div class="boundary-note"><strong>A small model, not an assay verdict.</strong><p>Equilibrium. One ligand per independent site. Conserved ligand and binding capacity. No avidity, internalization, or functional potency inference.</p></div>
+        </div>
+        <div id="results" hidden aria-live="polite">
+          <div class="results-heading"><div><p class="eyebrow">MODEL-BASED ASSESSMENT</p><h2 id="resultLabel"></h2></div><span id="staleBadge" class="badge warning" hidden>Inputs changed. Rerun.</span></div>
+          <div id="decision" class="decision"></div>
+          <div id="metrics" class="metrics"></div>
+          <div class="plot-grid"><article class="plot-card"><h3>Ligand depletion</h3><p>Fraction of added ligand bound</p><canvas id="depletionChart" role="img" aria-label="Modeled depletion by positive added concentration. Exact values in the table below."></canvas><div class="chart-legend"><span class="legend-line"></span>Modeled <span class="legend-line dashed"></span>Planning tolerance</div></article><article class="plot-card"><h3>Site occupancy</h3><p>Exact binding versus free = added</p><canvas id="occupancyChart" role="img" aria-label="Exact and naive occupancy at positive added concentrations. Exact values in the table below."></canvas><div class="chart-legend"><span class="legend-line"></span>Exact <span class="legend-line naive"></span>Naive</div></article></div>
+          <p class="chart-caption">Points are evaluated input doses; connecting lines are visual guides. Shading shows marginal bounds, not joint trajectories or confidence intervals. Zero-dose controls are excluded from the log axis and retained in the table.</p>
+          <article class="result-card"><div class="section-heading"><div><span class="small-label">ONE VARIABLE AT A TIME</span><h3>What would meet your tolerance?</h3></div></div><div id="recommendations"></div></article>
+          <article id="comparisonCard" class="result-card" hidden><div class="section-heading"><h3>Alternative condition</h3><button id="exportAlternative" class="secondary">Alternative JSON</button></div><div id="comparison"></div></article>
+          <article class="result-card table-card"><div class="section-heading"><div><h3>Every concentration, accounted for.</h3><p>Full precision in exports. Display values are rounded.</p></div><div class="export-actions"><button id="exportJson" class="secondary">JSON ↓</button><button id="exportCsv" class="secondary">CSV ↓</button></div></div><div class="table-scroll" tabindex="0" aria-label="Scrollable concentration results"><table><thead><tr><th>Added<br><span>nM</span></th><th>Free<br><span>nM</span></th><th>Bound<br><span>nM</span></th><th>Depletion<br><span>%</span></th><th>Occupancy<br><span>%</span></th><th>Naive<br><span>%</span></th><th>Error<br><span>pp</span></th><th>Assessment</th></tr></thead><tbody id="doseRows"></tbody></table></div><p class="table-note">Depletion: fraction of ligand bound. Occupancy: fraction of sites occupied. They are not the same quantity.</p></article>
+          <article class="result-card"><h3>Assumptions &amp; evidence record</h3><div id="record"></div><ul id="warnings" class="warnings"></ul></article>
+        </div>
+      </section>
+    </div>
+    <section id="method" class="method">
+      <div><p class="eyebrow">TRANSPARENT BY DESIGN</p><h2>Established equations.<br>Inspectable decisions.</h2><p>The contribution is a small pre-experiment check, not a new binding theory. No affinity fitting. No functional potency correction. No hidden acceptance threshold.</p><a href="downloads/free-dose-check-v0.1.0.zip" download class="secondary download-link">Download Python + source ↓</a></div>
+      <div class="method-detail"><h3>The model</h3><p class="formula">K<sub>d</sub> = (R<sub>T</sub> − B)(L<sub>T</sub> − B) / B</p><p>The solver uses a scaled, cancellation-resistant solution and independently evaluates free ligand. Site concentration comes from accessible sites, cell number, and incubation volume. Bounds use all four input corners.</p><h3>The design rule</h3><p class="formula">R<sub>cap</sub> = εL<sub>T</sub> + εK<sub>d</sub> / (1 − ε)</p><p>The lowest positive dose sets the binding-capacity limit. Recommended volume is rounded up and cells down, then rechecked through the same model.</p><div class="method-links"><a href="downloads/model.md" download>Equations &amp; numerical contract ↗</a><a href="downloads/validation.md" download>Verification &amp; limitations ↗</a><a href="downloads/quickstart.md" download>CLI &amp; input guide ↗</a></div><p class="references">Scientific context: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3000649/" target="_blank" rel="noopener noreferrer">Hulme &amp; Trevethick, 2010</a>; <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6067677/" target="_blank" rel="noopener noreferrer">Hunter &amp; Cochran, 2016</a>; <a href="https://www.nature.com/articles/s41598-023-37015-1" target="_blank" rel="noopener noreferrer">Kamprath et al., 2023</a>.</p></div>
+    </section>
+  </main>
+  <footer><span>FREE-DOSE CHECK / v0.1.0</span><span>Research use only. Biological validation: not yet established.</span><span>Same Python core. Browser or CLI.</span></footer>
+  <script src="app.js"></script>
+</body>
+</html>

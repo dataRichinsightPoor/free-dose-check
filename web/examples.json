@@ -1,0 +1,196 @@
+{
+  "constrained": {
+    "label": "Synthetic: high depletion, constrained design",
+    "cell_count": 100000,
+    "volume_uL": 100,
+    "sites_per_cell": 100000,
+    "kd_nM": 0.1,
+    "ligand_total_nM": [
+      0,
+      0.01,
+      0.1,
+      1,
+      10
+    ],
+    "depletion_tolerance": 0.1,
+    "max_volume_uL": 200,
+    "min_cells": 20000,
+    "ligand_format": "monovalent",
+    "provenance": {
+      "sites_per_cell": {
+        "kind": "assumed",
+        "note": "Synthetic accessible-site count, not experimental data."
+      },
+      "kd_nM": {
+        "kind": "assumed",
+        "note": "Synthetic independently specified Kd, not experimental data.",
+        "basis": "independent"
+      }
+    },
+    "assumptions": {
+      "equilibrium": {
+        "status": "supported",
+        "note": "Synthetic model assumption, not experimentally established."
+      },
+      "independent_sites": {
+        "status": "supported",
+        "note": "Synthetic monovalent 1:1 binding."
+      },
+      "closed_system": {
+        "status": "supported",
+        "note": "Synthetic conserved ligand and sites."
+      },
+      "well_mixed": {
+        "status": "supported",
+        "note": "Synthetic homogeneous incubation."
+      }
+    }
+  },
+  "low": {
+    "label": "Synthetic: low depletion",
+    "cell_count": 1000,
+    "volume_uL": 100,
+    "sites_per_cell": 100000,
+    "kd_nM": 0.1,
+    "ligand_total_nM": [
+      0,
+      0.01,
+      0.1,
+      1,
+      10
+    ],
+    "depletion_tolerance": 0.1,
+    "max_volume_uL": 200,
+    "min_cells": 500,
+    "ligand_format": "monovalent",
+    "provenance": {
+      "sites_per_cell": {
+        "kind": "assumed",
+        "note": "Synthetic accessible-site count, not experimental data."
+      },
+      "kd_nM": {
+        "kind": "assumed",
+        "note": "Synthetic independently specified Kd, not experimental data.",
+        "basis": "independent"
+      }
+    },
+    "assumptions": {
+      "equilibrium": {
+        "status": "supported",
+        "note": "Synthetic model assumption, not experimentally established."
+      },
+      "independent_sites": {
+        "status": "supported",
+        "note": "Synthetic monovalent 1:1 binding."
+      },
+      "closed_system": {
+        "status": "supported",
+        "note": "Synthetic conserved ligand and sites."
+      },
+      "well_mixed": {
+        "status": "supported",
+        "note": "Synthetic homogeneous incubation."
+      }
+    }
+  },
+  "bounded": {
+    "label": "Synthetic: bounds cross tolerance",
+    "cell_count": 100000,
+    "volume_uL": 100,
+    "sites_per_cell": {
+      "low": 1000,
+      "high": 100000
+    },
+    "kd_nM": {
+      "low": 0.05,
+      "high": 0.2
+    },
+    "ligand_total_nM": [
+      0,
+      0.01,
+      0.1,
+      1,
+      10
+    ],
+    "depletion_tolerance": 0.1,
+    "max_volume_uL": 200,
+    "min_cells": 20000,
+    "ligand_format": "monovalent",
+    "provenance": {
+      "sites_per_cell": {
+        "kind": "assumed",
+        "note": "Synthetic accessible-site count, not experimental data."
+      },
+      "kd_nM": {
+        "kind": "assumed",
+        "note": "Synthetic independently specified Kd, not experimental data.",
+        "basis": "independent"
+      }
+    },
+    "assumptions": {
+      "equilibrium": {
+        "status": "supported",
+        "note": "Synthetic model assumption, not experimentally established."
+      },
+      "independent_sites": {
+        "status": "supported",
+        "note": "Synthetic monovalent 1:1 binding."
+      },
+      "closed_system": {
+        "status": "supported",
+        "note": "Synthetic conserved ligand and sites."
+      },
+      "well_mixed": {
+        "status": "supported",
+        "note": "Synthetic homogeneous incubation."
+      }
+    }
+  },
+  "unsupported": {
+    "label": "Synthetic: unsupported internalizing bivalent ligand",
+    "cell_count": 100000,
+    "volume_uL": 100,
+    "sites_per_cell": 100000,
+    "kd_nM": 0.1,
+    "ligand_total_nM": [
+      0,
+      0.01,
+      0.1,
+      1,
+      10
+    ],
+    "depletion_tolerance": 0.1,
+    "max_volume_uL": 200,
+    "min_cells": 20000,
+    "ligand_format": "bivalent",
+    "provenance": {
+      "sites_per_cell": {
+        "kind": "assumed",
+        "note": "Synthetic accessible-site count, not experimental data."
+      },
+      "kd_nM": {
+        "kind": "assumed",
+        "note": "Synthetic independently specified Kd, not experimental data.",
+        "basis": "independent"
+      }
+    },
+    "assumptions": {
+      "equilibrium": {
+        "status": "supported",
+        "note": "Synthetic model assumption, not experimentally established."
+      },
+      "independent_sites": {
+        "status": "unsupported",
+        "note": "Bivalent binding with potential crosslinking."
+      },
+      "closed_system": {
+        "status": "unsupported",
+        "note": "Illustrative internalization during incubation."
+      },
+      "well_mixed": {
+        "status": "supported",
+        "note": "Synthetic homogeneous incubation."
+      }
+    }
+  }
+}

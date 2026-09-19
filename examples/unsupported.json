@@ -1,0 +1,47 @@
+{
+  "label": "Synthetic: unsupported internalizing bivalent ligand",
+  "cell_count": 100000,
+  "volume_uL": 100,
+  "sites_per_cell": 100000,
+  "kd_nM": 0.1,
+  "ligand_total_nM": [
+    0,
+    0.01,
+    0.1,
+    1,
+    10
+  ],
+  "depletion_tolerance": 0.1,
+  "max_volume_uL": 200,
+  "min_cells": 20000,
+  "ligand_format": "bivalent",
+  "provenance": {
+    "sites_per_cell": {
+      "kind": "assumed",
+      "note": "Synthetic accessible-site count, not experimental data."
+    },
+    "kd_nM": {
+      "kind": "assumed",
+      "note": "Synthetic independently specified Kd, not experimental data.",
+      "basis": "independent"
+    }
+  },
+  "assumptions": {
+    "equilibrium": {
+      "status": "supported",
+      "note": "Synthetic model assumption, not experimentally established."
+    },
+    "independent_sites": {
+      "status": "unsupported",
+      "note": "Bivalent binding with potential crosslinking."
+    },
+    "closed_system": {
+      "status": "unsupported",
+      "note": "Illustrative internalization during incubation."
+    },
+    "well_mixed": {
+      "status": "supported",
+      "note": "Synthetic homogeneous incubation."
+    }
+  }
+}

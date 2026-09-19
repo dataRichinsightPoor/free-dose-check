@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, cite its version and the specific model assumptions. Biological validation is not established."
+title: "Free-Dose Check"
+type: software
+version: 0.1.0
+date-released: 2026-09-19
+authors:
+  - name: "Data-Rich, Insight-Poor"
+abstract: "A research-use finite-bath equilibrium binding design aid with explicit assumption gates, bounded inputs, and forward-checked one-variable recommendations."
