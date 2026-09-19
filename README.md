@@ -55,4 +55,4 @@ See `docs/model.md`, `docs/assumptions.md`, `docs/validation.md`, and `docs/quic
 
 ## License
 
-License selection is pending the author's approval before public release. No third-party scientific dataset is bundled. Runtime and test dependencies retain their own licenses.
+Original project code and documentation are released under the [MIT License](LICENSE.md), copyright 2026 dataRichinsightPoor. No third-party scientific dataset is bundled. Runtime, fonts, and test/build dependencies retain their own licenses; the project license does not replace their terms.

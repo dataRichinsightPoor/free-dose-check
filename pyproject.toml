@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -9,6 +9,12 @@ description = "A transparent finite-bath equilibrium binding design check."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = []
+license = "MIT"
+license-files = ["LICENSE.md"]
+
+[project.urls]
+Repository = "https://github.com/dataRichinsightPoor/free-dose-check"
+Issues = "https://github.com/dataRichinsightPoor/free-dose-check/issues"
 
 [project.optional-dependencies]
 test = ["pytest>=8", "mpmath>=1.3"]

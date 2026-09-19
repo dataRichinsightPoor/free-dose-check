@@ -1,6 +1,6 @@
 # Free-Dose Check v0.1.0: implementation receipt
 
-This is a private first-release implementation, prepared September 19, 2026. It includes a runnable browser application and downloadable repository snapshot, but has not been published to GitHub or assigned a public open-source license.
+This first-release implementation was prepared September 19, 2026. It includes a runnable browser application and downloadable repository snapshot. The author approved public GitHub publication as `dataRichinsightPoor/free-dose-check` and the MIT license on the same date.
 
 ## Implemented
 
@@ -19,10 +19,10 @@ Browser/native parity was checked for four synthetic scenarios, a baseline JSON 
 
 Browser checks include input blankness on startup, supported/uncertain/unsupported gates, functional-input rejection, duplicate/all-zero input rejection, editing and stale-export disabling, comparison, downloads, light/dark layouts, and mobile viewport overflow checks. The runtime was also exercised inside an opaque-origin sandbox iframe.
 
-Local tools used: Python 3.14.3, pytest 9.1.1, mpmath 1.4.1, and Playwright 1.59.0. The configured GitHub Actions Python matrix has not been run on GitHub; it is not represented as completed CI.
+Local tools used: Python 3.14.3, pytest 9.1.1, mpmath 1.4.1, and Playwright 1.59.0. These verification results describe the initial local implementation. For remote CI results, consult the repository's GitHub Actions runs rather than treating this local receipt as evidence of completed remote CI.
 
-## Boundary before public release
+## Public-release boundary
 
 Biological validation remains not established. Synthetic correctness does not show that accessible-site counts, affinity, equilibrium, or absence of sinks are true in a real assay, or that a suggested condition supplies enough signal.
 
-The license is intentionally pending author approval. The repository and app must not be presented as a biologically validated assay or as a novel binding theory; the contribution is the constrained, inspectable decision workflow.
+Original project code and documentation use the MIT license; third-party dependencies retain their own terms. The repository and app must not be presented as a biologically validated assay or as a novel binding theory; the contribution is the constrained, inspectable decision workflow.

@@ -1,7 +1,8 @@
 # Free-Dose Check
 ## First-release specification: v0.1.0
 
-Status: ready for implementation planning; software not yet implemented.  
+Status: implemented as v0.1.0; public GitHub publication and MIT licensing authorized September 19, 2026. The requirements below preserve the first-release design; implementation and verification details are in `implementation-receipt.md`.
+
 Release class: research-use, model-based assay-design aid.  
 Proposed repository: `free-dose-check`; Python module: `free_dose_check`.  
 Prepared: September 19, 2026.
@@ -267,7 +268,7 @@ LICENSE
 README.md
 ```
 
-Use an MIT license for original code, subject to author approval, and identify third-party licenses separately. Every public interface should display “Research-use model; biological validation status: not yet established” until evidence justifies a narrower updated claim.
+Use an MIT license for original code and identify third-party licenses separately. Author approval for MIT licensing was received September 19, 2026. Every public interface should display “Research-use model; biological validation status: not yet established” until evidence justifies a narrower updated claim.
 
 ### Worked synthetic acceptance case
 
@@ -338,7 +339,7 @@ The initial release may ship as a numerically verified planning tool without exp
 
 ## Open questions and implementation decisions
 
-- **Author, nonblocking:** Confirm the repository name and code license. Defaults are `free-dose-check` and MIT, with no publication or repository creation authorized by this specification.
+- **Author, resolved September 19, 2026:** Public repository `dataRichinsightPoor/free-dose-check` and MIT licensing were explicitly authorized after implementation. Publication was not authorized by the original specification alone.
 - **Scientific owner, blocking for biological validation only:** Identify a public benchmark or collaborator with an effective 1:1 system, independently supported inputs, and a density/volume perturbation. No employer-derived or unpublished proprietary data should be used.
 - **Scientific owner, nonblocking for implementation:** Choose any assay-specific depletion tolerance. v0.1 retains an editable 10% default, not a universal validity threshold.
 - **Implementation owner, blocking before release:** Document and test practical frontend loading behavior and the verified numerical range. Pin runtime and browser dependencies.
