@@ -7,5 +7,6 @@ license: MIT
 repository-code: "https://github.com/dataRichinsightPoor/free-dose-check"
 date-released: 2026-09-19
 authors:
-  - name: "Data-Rich, Insight-Poor"
+  - family-names: "Damko"
+    given-names: "Ermelinda"
 abstract: "A research-use finite-bath equilibrium binding design aid with explicit assumption gates, bounded inputs, and forward-checked one-variable recommendations."
